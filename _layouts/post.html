@@ -1,75 +1,74 @@
 ---
-layout: comments
+layout: default
 ---
-<div class="post">
-  {% if site.post.meta.enable %}
-  <small class="post-date">
-    {% if site.post.meta.date %}
-    <i class="fas fa-calendar-day"></i>
-    {{ page.date | date_to_string }}
-    {% endif %}
-    {% if site.post.meta.wordcount.enable %}
-    <i class="fas fa-file-word"></i>
-    {{ page.content | strip_html | strip_newlines | remove: " " | size }}{{ site.post.meta.wordcount.unit }}
-    {% endif %}
-    {% if site.post.meta.readtime.enable %}
-    <i class="fas fa-coffee"></i>
-    {{ page.content | strip_html | strip_newlines | remove: " " | size | divided_by: site.post.meta.readtime.divided_by | plus: 1 }}{{ site.post.meta.readtime.unit }}
-    {% endif %}
-    {% if site.post.meta.visitor.enable %}
-    <span id="{{ page.url }}" class="leancloud-visitors" data-flag-title="{{ page.title }}">
-      <i class="far fa-eye"></i>
-      <span class="leancloud-visitors-count"></span>{{ site.post.meta.visitor.unit }}
-    </span>
-    {% endif %}
-    {% for node in page.tags %}
-    <i class="fas fa-tag"></i>
-    {{ node }}
-    {% endfor %}
-    </br>
-    {{ site.post.meta.copyright }}
-  </small>
-  {% if page.background_music %}
-  <div>
-    {{ page.background_music }}
-  </div>
-  {% endif %}
-  {% endif %}
-  <div class="post-content">
-    {{ content }}
-  </div>
-  {% if site.post.related.enable %}
-  <div class="related">
-    {{ site.post.related.title }}
-    <ul class="related-posts">
-      {% for post in site.related_posts limit:3 %}
-      <li>
-        <a href="{{ site.baseurl }}{{ post.url }}">
-          {{ post.title }}
-          <small>{{ post.date | date_to_string }}</small>
-        </a>
-      </li>
-      {% endfor %}
-    </ul>
-  </div>
-  {% endif %}
-  {% if site.post.reward.enable %}
-  <div class="reward">
-    <button id="rewardButton" disable="enable"
-      onclick="var qr = document.getElementById('rewardQRs'); qr.style.display = (qr.style.display === 'block') ? 'none' : 'block';">
-      {{ site.post.reward.text }}
-    </button>
-    <div id="rewardQRs">
-      <table>
-        <tr>
-          {% for node in site.post.reward.img %}
-          <td id="{{ node.id }}" class="reward_qr">
-            <img id="{{ node.id }}_qr" src="{{ node.src }}" alt="{{ site.author }}{{ node.id }}">
-          </td>
-          {% endfor %}
-        </tr>
-      </table>
+<div class="container docs-container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="sidebar hidden-print" role="complementary">
+        {% include lefttree.html %} 
+      </div>
+    </div>
+    <div class="col-md-9" role="main">
+      <div class="panel docs-content">
+        <div class="wrapper">
+            <header class="post-header">
+              <h1 class="post-title">{{ page.title }}</h1>
+              <!--
+                <p class="post-meta">{{ page.date | date: "%b %-d, %Y" }}{% if page.author %} • {{ page.author }}{% endif %}{% if page.meta %} • {{ page.meta }}{% endif %}</p>
+              -->
+              <div class="meta">Date： <span class="postdate">{{ page.date | date: "%b %d, %Y" }}</span> Author： <a target="_blank" href="{{site.url}}">{{ site.author }}</a></div>
+              <br />
+              <blockquote><p>本文章采用<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh"> 知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议 </a>进行许可。转载请注明来自<a href="http://xiaokedada.com">小可嗒嗒的博客</a></p></blockquote>
+            </header>
+            <article class="post-content">
+              {{ content }}
+            </article>
+          <hr>
+          <blockquote><p>对于本文内容有问题或建议的小伙伴，欢迎在文章底部留言交流讨论。</p></blockquote>
+          <div class="text-center">
+            <a href="{{ '/donate/' | prepend: site.baseurl }}" target="_blank" style="text-decoration: none"><button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-usd" aria-hidden="true"></span> 您的支持是将是我写作最大的动力!</button></a>
+          </div>
+        </div>
+      </div>
+      <!--comment-->
+      <!--code for 网易云跟帖
+      <div class="panel docs-content">
+        <article class="post-content">
+          <div class="wrapper">
+            <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+            <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+            <script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+            <script>
+            var cloudTieConfig = {
+            url: document.location.href, 
+            sourceId: "",
+            productKey: "b6d55f09637f497389b80bafc11aada1",
+            target: "cloud-tie-wrapper"
+            };
+            var yunManualLoad = true;
+            Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
+            </script>
+          </div>
+        </article>
+      </div> -->
+      <!--Gitment-->
+      <div id="container"></div>
+      <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+      <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+      <script>
+        var gitment = new Gitment({
+          id: window.location.pathname, 
+          owner: 'maoxiaoke',
+          repo: 'maoxiaoke.github.io',
+          oauth: {
+          client_id: 'a884d93361c09d5c03b3',
+          client_secret: '73f1de789521db427d431e9f8488db2f974ee0ba',
+          },
+        })
+        gitment.render('container')
+      </script>
+      
     </div>
   </div>
-  {% endif %}
 </div>
+
